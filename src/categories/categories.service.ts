@@ -8,7 +8,7 @@ import Fuse from 'fuse.js';
 //import categoriesJson from '@db/categories.json';
 import { paginate } from 'src/common/pagination/paginate';
 import { Db, ObjectID } from 'mongodb';
-
+//Anis
 //const categories = plainToClass(Category, categoriesJson);
 const options = {
   keys: ['name', 'slug'],
