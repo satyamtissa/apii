@@ -52,6 +52,8 @@ export class ProductsService {
         data = this.fuse.search(value)?.map(({ item }) => item);
       }
     }
+
+    //satyam
     
     // if (text?.replace(/%/g, '')) {
     //   data = fuse.search(text)?.map(({ item }) => item);
