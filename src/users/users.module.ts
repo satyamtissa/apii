@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ProfilesController, UsersController } from './users.controller';
 
-import { MongoModule } from 'src/common/mongo.module';
+import { MongoModule } from '../common/mongo.module';
 
 @Module({
   imports: [

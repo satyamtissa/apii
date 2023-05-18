@@ -1,6 +1,6 @@
-import { SortOrder } from 'src/common/dto/generic-conditions.dto';
-import { PaginationArgs } from 'src/common/dto/pagination-args.dto';
-import { Paginator } from 'src/common/dto/paginator.dto';
+import { SortOrder } from '../../common/dto/generic-conditions.dto';
+import { PaginationArgs } from '../../common/dto/pagination-args.dto';
+import { Paginator } from '../../common/dto/paginator.dto';
 
 import { Products } from '../entities/products.entity';
 
@@ -14,6 +14,11 @@ export class GetProductsDto extends PaginationArgs {
   search?: string;
   parent?: number | string = 'null';
   language?: string;
+  q?:string;
+  price?: number;
+  color?: string;
+  sort_by?:string;
+  category?:string;
 }
 
 export enum QueryProductsOrderByColumn {

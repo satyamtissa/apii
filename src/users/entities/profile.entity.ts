@@ -1,7 +1,7 @@
  
-import { CoreEntity } from 'src/common/entities/core.entity';
+import { CoreEntity } from '../../common/entities/core.entity';
 import { User } from './user.entity';
-import { Image } from 'src/common/entities/image.entity';
+import { Image } from '../../common/entities/image.entity';
  
  
 export class Profile extends CoreEntity {

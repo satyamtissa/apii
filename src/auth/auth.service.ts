@@ -18,7 +18,7 @@ import {
 } from './dto/create-auth.dto';
 import { v4 as uuidv4 } from 'uuid';
 //import { plainToClass } from 'class-transformer';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../users/entities/user.entity';
  
 import { Db, ObjectID } from 'mongodb';
 import * as bcrypt from 'bcrypt';

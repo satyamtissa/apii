@@ -1,5 +1,5 @@
-import { Address } from 'src/addresses/entities/address.entity';
-import { CoreEntity } from 'src/common/entities/core.entity';
+import { Address } from '../../addresses/entities/address.entity';
+import { CoreEntity } from '../../common/entities/core.entity';
 // import { Order } from 'src/orders/entities/order.entity';
 
 import { Profile } from './profile.entity';

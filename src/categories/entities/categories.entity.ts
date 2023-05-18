@@ -1,5 +1,5 @@
-import { CoreEntity } from "src/common/entities/core.entity"
-import { Image } from "src/common/entities/image.entity"; 
+import { CoreEntity } from "../../common/entities/core.entity"
+import { Image } from "../../common/entities/image.entity"; 
  
 export class Categories extends CoreEntity  
 { 

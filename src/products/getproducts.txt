@@ -1,0 +1,47 @@
+getProducts({ limit, page, search, parent, q,price}: GetProductsDto) {
+    console.log("In service get products====="+ JSON.stringify({ limit, page, search, parent, q }))
+    
+    if (!page) page = 1;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    let data: Products[] = this.products;
+  
+    if (search) {
+      const searchParams = search.split(';');
+      const queryParams = searchParams.map(param => {
+        const [key, value] = param.split(':');
+        return { key, value };
+        console.log("inside search")
+      });
+    
+      const qParam = queryParams.find(param => param.key === 'q');
+      if (qParam) {
+        const q = qParam.value.toLowerCase();
+        //data = this.products.find(product => product.slug.toLowerCase() === q);
+       data = this.products.filter(product => (product.slug.toLowerCase() === q) || (product.type.toLowerCase() === q));
+
+        console.log("inside qParam")
+      }
+    } else if (q) {
+      const searchStr = q.toLowerCase();
+      //data = this.products.find(product => product.slug.toLowerCase() === searchStr);
+      data = this.products.filter(product => (product.slug.toLowerCase() === searchStr) || (product.type.toLowerCase() === searchStr));
+
+      console.log('searchstr',searchStr)
+      console.log("inside q")
+    }
+    const results = data
+    
+    //const url = `/search?search=${search || 'q:' + q}&limit=${limit}`;
+   // const url = `/search?q=Stunning Butterfly Pearl Necklace&limit=${limit}`;
+    const url = `/search?q=${q}&limit=${limit}`;
+    console.log("result",results)
+    return {
+      data: results,
+      
+      ...paginate(data.length, page, limit, results.length, url),
+    };
+  }
+  
+  
+  

@@ -6,11 +6,9 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Categories } from './entities/categories.entity';
 import Fuse from 'fuse.js';
 //import categoriesJson from '@db/categories.json';
-import { paginate } from 'src/common/pagination/paginate';
+import { paginate } from '../common/pagination/paginate';
 import { Db, ObjectID } from 'mongodb';
-//Anis
-//Sheikh
-//786
+
 //const categories = plainToClass(Category, categoriesJson);
 const options = {
   keys: ['name', 'slug'],

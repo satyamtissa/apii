@@ -1,3 +1,60 @@
+///get-all-products
+
+
+import { QueryOptionsType, Product } from "@framework/types";
+import { API_ENDPOINTS } from "@framework/utils/api-endpoints";
+import http2 from "@framework/utils/http2";
+import { sortBy } from "lodash";
+import shuffle from "lodash/shuffle";
+import { type } from "os";
+
+import { useInfiniteQuery } from "react-query";
+type PaginatedProduct = {
+	data: Product[];
+	paginatorInfo: any;
+};
+	const fetchProducts = async ({ queryKey }: any) => {
+		const [_key, _params] = queryKey; 
+	let apiUrl = API_ENDPOINTS.SEARCH;
+
+
+  if (_params.q || _params.price ) {
+    //apiUrl += '?price=' + _params.price;
+	apiUrl = (apiUrl+'?q='+_params.q+'&price='+_params.price)
+  }
+
+
+  const { data } = await http2.get(apiUrl);
+ // console.log("data.data is ", data.data)
+  //console.log("Extracted Data",JSON.stringify(data));
+  return {
+   
+    paginatorInfo: {
+      nextPageUrl: data.next_page_url,
+    },
+	data: shuffle(data.data),
+  };
+	};
+
+const useProductsQuery = (options: QueryOptionsType) => {
+	return useInfiniteQuery<PaginatedProduct, Error>(
+		[API_ENDPOINTS.PRODUCTS, options],
+		fetchProducts,
+		{
+			getNextPageParam: ({ paginatorInfo }) => paginatorInfo.nextPageUrl,
+		}
+	);
+};
+
+export { useProductsQuery, fetchProducts };
+
+
+
+
+
+
+//products.service
+
 import { Inject, Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { CreateProductsDto } from './dto/create-products.dto';
@@ -38,7 +95,7 @@ export class ProductsService {
     return this.products[0];
   }
 
-  getProducts({ limit, page, search, parent, q, price ,sort_by,category}: GetProductsDto) {
+  getProducts({ limit, page, search, parent, q, price ,sort_by}: GetProductsDto) {
     console.log("In service get products=====" + JSON.stringify({ limit, page, search, parent, q, price }))
   
     if (!page) page = 1;
@@ -83,13 +140,6 @@ export class ProductsService {
           data = this.products.filter(product => (product.sale_price>minPrice) && ((product.slug.toLowerCase() === searchStr)||(product.type.toLowerCase() === searchStr)));
 
         }
-        else if(category)
-        {
-          console.log("in category")
-          console.log("categoryvalue",category)
-          data = this.products.filter(product => ((product.slug.toLowerCase() === category)||(product.type.toLowerCase() === category)));
-
-        }
       
         else
         {
@@ -97,7 +147,6 @@ export class ProductsService {
         }
         console.log('pricesearchstr', searchStr)
         console.log("priceinside q and price")
-        console.log("category is ",category)
     
      
     }

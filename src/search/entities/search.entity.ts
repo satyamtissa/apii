@@ -12,8 +12,6 @@ export class Products extends CoreEntity
     price : number;
     sale_price : number;
     variations : Variations[];
-    
-    categories: string[];
 
     
 }

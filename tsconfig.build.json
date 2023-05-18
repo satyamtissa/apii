@@ -1,4 +1,17 @@
+
+
 {
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    "sourceMap": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
 }
+

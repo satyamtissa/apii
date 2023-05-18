@@ -8,7 +8,9 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { ProductsModule } from './products/products.module';
-import { OrdersModule } from './orders/orders.module';
+import { ReportsModule } from './reports/reports.module';
+import { SearchProductsModule } from './search/search.module';
+import { AddToCartModule } from './AddToCartApi/AddToCart.module';
 
 @Module({
   
@@ -26,7 +28,9 @@ import { OrdersModule } from './orders/orders.module';
     UsersModule,
     AddressesModule,
     ProductsModule,
-    OrdersModule,
+    ReportsModule,
+    SearchProductsModule,
+    AddToCartModule
    
   ],
   controllers: [],

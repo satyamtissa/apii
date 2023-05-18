@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { MongoModule } from 'src/common/mongo.module';
-import { ReportsService } from 'src/reports/reports.service';
+import { MongoModule } from '../common/mongo.module';
+import { ReportsService } from '../reports/reports.service';
 ///import { LocalStrategy } from 'local.strategy';
  
 import { PassportModule } from '@nestjs/passport';
