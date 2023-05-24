@@ -8,6 +8,7 @@ export class Products extends CoreEntity
     description : string;
     slug: string;
     isNewArrival : boolean;
+    type: string;
     image:Image;
     price : number;
     sale_price : number;

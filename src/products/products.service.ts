@@ -9,7 +9,7 @@ import { paginate } from '../common/pagination/paginate';
 import { Db, ObjectID } from 'mongodb';
 
 const options = {
-  keys: ['name', 'slug'],
+  keys: ['name', 'slug','q','type'],
   threshold: 0.3,
   
 };
@@ -80,7 +80,7 @@ export class ProductsService {
         console.log(sort_by)  
         if(minPrice>10)
         {
-          data = this.products.filter(product => (product.sale_price>minPrice) && ((product.slug.toLowerCase() === searchStr)||(product.type.toLowerCase() === searchStr)));
+          data = this.products.filter(product => (product.sale_price>minPrice && product.sale_price<maxPrice) && ((product.slug.toLowerCase() === searchStr)||(product.type.toLowerCase() === searchStr)));
 
         }
         else if(category)
@@ -94,7 +94,8 @@ export class ProductsService {
         else
         {
         data = this.products.filter(product => ((product.slug.toLowerCase() === searchStr)||(product.type.toLowerCase() === searchStr)));
-        }
+       //data =this.products.filter(product => (product.slug.toLowerCase() === searchStr || product.type.toLowerCase() === searchStr)).slice(0, 10);
+      }
         console.log('pricesearchstr', searchStr)
         console.log("priceinside q and price")
         console.log("category is ",category)
@@ -136,6 +137,8 @@ export class ProductsService {
     return this.db.collection('products').findOne({ slug });
 
   }*/
+
+  
 
 
 }

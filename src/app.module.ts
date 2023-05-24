@@ -11,7 +11,7 @@ import { ProductsModule } from './products/products.module';
 import { ReportsModule } from './reports/reports.module';
 import { SearchProductsModule } from './search/search.module';
 import { AddToCartModule } from './AddToCartApi/AddToCart.module';
-
+import { OrdersModule } from './orders/orders.module';
 @Module({
   
   imports: [
@@ -30,7 +30,8 @@ import { AddToCartModule } from './AddToCartApi/AddToCart.module';
     ProductsModule,
     ReportsModule,
     SearchProductsModule,
-    AddToCartModule
+    AddToCartModule,
+    OrdersModule
    
   ],
   controllers: [],

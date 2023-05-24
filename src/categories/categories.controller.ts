@@ -13,7 +13,7 @@ import { CreateCategoriesDto } from './dto/create-categories.dto';
 import { GetCategoriesDto } from './dto/get-categories.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
-@Controller('categories.json')
+@Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
