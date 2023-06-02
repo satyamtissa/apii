@@ -95,6 +95,7 @@ async login(loginInput: LoginDto): Promise<AuthResponse> {
         token: userfind.token,
         name : userfind.name,
         email : userfind.email,
+        id:userfind.id,
         permissions: ['customer'],
       };
     }

@@ -38,8 +38,8 @@ export class ProductsService {
     return this.products[0];
   }
 
-  getProducts({ limit, page, search, parent, q, price ,sort_by,category}: GetProductsDto) {
-    console.log("In service get products=====" + JSON.stringify({ limit, page, search, parent, q, price }))
+  getProducts({ limit, page, search, parent, q,v,s, price ,sort_by,category}: GetProductsDto) {
+    console.log("In service get products=====" + JSON.stringify({ limit, page, search, parent, q,v, price }))
   
     if (!page) page = 1;
     const startIndex = (page - 1) * limit;
@@ -102,6 +102,38 @@ export class ProductsService {
     
      
     }
+
+
+    else if (v) {
+
+     console.log("inside v")
+      const searchStr1 = v.toLowerCase();
+      
+    
+      
+      
+      data = this.products.filter(product => ((product.slug.toLowerCase() === searchStr1)||(product.type.toLowerCase() === searchStr1)));
+     //data =this.products.filter(product => (product.slug.toLowerCase() === searchStr || product.type.toLowerCase() === searchStr)).slice(0, 10);
+    
+      console.log('pricesearchstr', searchStr1)
+      console.log("priceinside q and price")
+      
+   
+  }
+
+
+  else if (s) {
+    console.log("inside s");
+    const searchStr2 = s.toLowerCase();
+    data = this.products.filter(
+      (product) =>
+       
+        product.name.toLowerCase().includes(searchStr2)
+    );
+    console.log('pricesearchstr', searchStr2);
+    console.log("priceinside q and price");
+  }
+  
    
   
     const results = data

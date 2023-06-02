@@ -14,6 +14,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { GetUsersDto } from './dto/get-users.dto';
+import {  Patch} from '@nestjs/common';
+import { CreateAddToPasswordDto } from './dto/password.dto';
+import { ADDTOPASSWORD } from './entities/password.entity';
+
 
 @Controller('users')
 export class UsersController {
@@ -57,6 +61,17 @@ export class UsersController {
   @Post('make-admin')
   makeAdmin(@Param('user_id') id: string) {
     return this.usersService.makeAdmin(id);
+  }
+
+  @Post('add-to-password')
+  async addToPassword(@Body() addToPasswordDto: CreateAddToPasswordDto): Promise<string> {
+    try {
+      const result = await this.usersService.addToPassword(addToPasswordDto);
+      return result;
+    } catch (error) {
+      console.error(error);
+      return 'Failed to update password';
+    }
   }
 }
 

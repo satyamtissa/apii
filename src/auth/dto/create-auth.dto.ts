@@ -42,6 +42,7 @@ export class AuthResponse {
   permissions: string[];
   name?:string;
   email?:string;
+  id?:number;
 
 }
 export class CoreResponse extends CoreMutationOutput {}

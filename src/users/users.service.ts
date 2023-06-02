@@ -4,13 +4,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { GetUsersDto, UserPaginator } from './dto/get-users.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import Fuse from 'fuse.js';
-
+import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
 //import usersJson from '@db/users.json';
 import { paginate } from '../common/pagination/paginate';
 import { Db } from 'mongodb';
 import { profile } from 'console';
-
+import { CreateAddToPasswordDto } from './dto/password.dto';
+import { ADDTOPASSWORD } from './entities/password.entity';
 //const users = plainToClass(User, usersJson);
 
 const options = {
@@ -91,7 +92,37 @@ export class UsersService {
     return userData;
     //this.users.find((user) => user.id === id);
   }
-
+  async addToPassword(addToPasswordDto: CreateAddToPasswordDto): Promise<string> {
+    const { id, email, oldpassword, newpassword } = addToPasswordDto;
+  
+    try {
+      const user = await this.db.collection('users').findOne({ id, email });
+  
+      if (user) {
+        const passwordMatches = await bcrypt.compare(oldpassword, user.password);
+  
+        if (!passwordMatches) {
+          return 'Old password is incorrect';
+        }
+        const hashedNewPassword = await bcrypt.hash(newpassword, 10); // Hash the new password
+        // Update the password
+        await this.db.collection('users').updateOne(
+          { id, email },
+          { $set: { password: hashedNewPassword } }
+        );
+  
+        return 'Password updated successfully';
+      } else {
+        return 'User not found';
+      }
+    } catch (error) {
+      console.error(error);
+      this.init();
+      return 'Failed to update password';
+    }
+  }
+  
+  
   async update(id: number, updateUserDto: UpdateUserDto) {
 
 
