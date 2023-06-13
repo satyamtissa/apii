@@ -21,6 +21,7 @@ export class GetProductsDto extends PaginationArgs {
   category?:string;
   v?:string;
   s?:string;
+  sortBy?:string;
 }
 
 export enum QueryProductsOrderByColumn {

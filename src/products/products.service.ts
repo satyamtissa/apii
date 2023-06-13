@@ -38,8 +38,8 @@ export class ProductsService {
     return this.products[0];
   }
 
-  getProducts({ limit, page, search, parent, q,v,s, price ,sort_by,category}: GetProductsDto) {
-    console.log("In service get products=====" + JSON.stringify({ limit, page, search, parent, q,v, price }))
+  getProducts({ limit, page, search, parent, q,v,s, price ,sort_by,category,color}: GetProductsDto) {
+    console.log("In service get products=====" + JSON.stringify({ limit, page, search, parent, q,v, price, sort_by }))
   
     if (!page) page = 1;
     const startIndex = (page - 1) * limit;
@@ -69,39 +69,102 @@ export class ProductsService {
 
         console.log("inside qParam")
       }
-    } else if (q) {
+    } 
 
-     
-        const searchStr = q.toLowerCase();
-        let [minPrice, maxPrice] = price.toString().split('-').map(p => parseInt(p));
-        console.log(minPrice)
-        console.log(maxPrice)
-        console.log(typeof(minPrice))
-        console.log(sort_by)  
-        if(minPrice>10)
-        {
-          data = this.products.filter(product => (product.sale_price>minPrice && product.sale_price<maxPrice) && ((product.slug.toLowerCase() === searchStr)||(product.type.toLowerCase() === searchStr)));
 
-        }
-        else if(category)
-        {
-          console.log("in category")
-          console.log("categoryvalue",category)
-          data = this.products.filter(product => ((product.slug.toLowerCase() === category)||(product.type.toLowerCase() === category)));
-
-        }
-      
-        else
-        {
-        data = this.products.filter(product => ((product.slug.toLowerCase() === searchStr)||(product.type.toLowerCase() === searchStr)));
-       //data =this.products.filter(product => (product.slug.toLowerCase() === searchStr || product.type.toLowerCase() === searchStr)).slice(0, 10);
-      }
-        console.log('pricesearchstr', searchStr)
-        console.log("priceinside q and price")
-        console.log("category is ",category)
     
-     
+      if (q) {
+        const searchStr = q.toLowerCase();
+        if (price) {
+          if (price.toString() === "1000-") {
+          let  minPrice = 1000;
+          let  maxPrice = 999999999;
+          } else {
+          let [minPrice, maxPrice] = price.toString().split('-').map(p => parseInt(p));
+          }
+        }
+        let [minPrice, maxPrice] = price?.toString().split('-').map(p => parseInt(p)) || [];
+      
+        if (minPrice && minPrice > 10 && sort_by && color) {
+        // Combination: q + price + sort_by + color
+        data = this.products.filter(product =>
+          (product.sale_price > minPrice && product.sale_price < maxPrice) &&
+          (product.slug.toLowerCase() === searchStr || product.type.toLowerCase() === searchStr) &&
+          product.colour === color
+        ).sort((a, b) => {
+          if (sort_by === "low-high") {
+            return a.sale_price - b.sale_price;
+          } else if (sort_by === "high-low") {
+            return b.sale_price - a.sale_price;
+          }
+          // Handle other sort_by values here, if needed
+        });
+      } else if (minPrice && minPrice > 10 && sort_by) {
+        // Combination: q + price + sort_by
+        data = this.products.filter(product =>
+          (product.sale_price > minPrice && product.sale_price < maxPrice) &&
+          (product.slug.toLowerCase() === searchStr || product.type.toLowerCase() === searchStr)
+        ).sort((a, b) => {
+          if (sort_by === "low-high") {
+            return a.sale_price - b.sale_price;
+          } else if (sort_by === "high-low") {
+            return b.sale_price - a.sale_price;
+          }
+          // Handle other sort_by values here, if needed
+        });
+      } else if (minPrice && minPrice > 10 && color) {
+        // Combination: q + price + color
+        data = this.products.filter(product =>
+          (product.sale_price > minPrice && product.sale_price < maxPrice) &&
+          (product.slug.toLowerCase() === searchStr || product.type.toLowerCase() === searchStr) &&
+          product.colour === color
+        );
+      } else if (sort_by && color) {
+        // Combination: q + sort_by + color
+        data = this.products.filter(product =>
+          (product.slug.toLowerCase() === searchStr || product.type.toLowerCase() === searchStr) &&
+          product.colour === color
+        ).sort((a, b) => {
+          if (sort_by === "low-high") {
+            return a.sale_price - b.sale_price;
+          } else if (sort_by === "high-low") {
+            return b.sale_price - a.sale_price;
+          }
+          // Handle other sort_by values here, if needed
+        });
+      } else if (minPrice && minPrice > 10) {
+        // Combination: q + price
+        data = this.products.filter(product =>
+          (product.sale_price > minPrice && product.sale_price < maxPrice) &&
+          (product.slug.toLowerCase() === searchStr || product.type.toLowerCase() === searchStr)
+        );
+      } else if (sort_by) {
+        // Combination: q + sort_by
+        data = this.products.filter(product =>
+          (product.slug.toLowerCase() === searchStr || product.type.toLowerCase() === searchStr)
+        ).sort((a, b) => {
+          if (sort_by === "low-high") {
+            return a.sale_price - b.sale_price;
+          } else if (sort_by === "high-low") {
+            return b.sale_price - a.sale_price;
+          }
+          // Handle other sort_by values here, if needed
+        });
+      } else if (color) {
+        // Combination: q + color
+        data = this.products.filter(product =>
+          (product.slug.toLowerCase() === searchStr || product.type.toLowerCase() === searchStr) &&
+          product.colour === color
+        );
+      } else {
+        // Only q filter
+        data = this.products.filter(product =>
+          (product.slug.toLowerCase() === searchStr || product.type.toLowerCase() === searchStr)
+        );
+      }
     }
+    
+    
 
 
     else if (v) {
@@ -120,7 +183,7 @@ export class ProductsService {
       
    
   }
-
+ 
 
   else if (s) {
     console.log("inside s");
