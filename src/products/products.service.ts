@@ -75,16 +75,36 @@ export class ProductsService {
     
       if (q) {
         const searchStr = q.toLowerCase();
-        if (price) {
-          if (price.toString() === "1000-") {
-          let  minPrice = 1000;
-          let  maxPrice = 999999999;
-          } else {
-          let [minPrice, maxPrice] = price.toString().split('-').map(p => parseInt(p));
-          }
+       
+        //let [minPrice, maxPrice] = price?.toString().split('-').map(p => parseInt(p)) || [];
+       
+
+        let minPrice: number | undefined, maxPrice: number | undefined;
+
+        if (typeof price === 'number') {
+          // Case: Single price value
+          minPrice = maxPrice = price;
+        } else if (typeof price === 'string') {
+          const priceRanges = decodeURIComponent(price).split(',');
+        
+          priceRanges.forEach((range) => {
+            const [start, end] = range.split('-').map(Number);
+        
+            if (!isNaN(start) && !isNaN(end)) {
+              if (minPrice === undefined || start < minPrice) {
+                minPrice = start;
+              }
+        
+              if (maxPrice === undefined || end > maxPrice) {
+                maxPrice = end;
+              }
+            }
+          });
         }
-        let [minPrice, maxPrice] = price?.toString().split('-').map(p => parseInt(p)) || [];
-      
+        console.log('Min Price:', minPrice);
+console.log('Max Price:', maxPrice);
+
+        
         if (minPrice && minPrice > 10 && sort_by && color) {
         // Combination: q + price + sort_by + color
         data = this.products.filter(product =>
@@ -175,7 +195,7 @@ export class ProductsService {
     
       
       
-      data = this.products.filter(product => ((product.slug.toLowerCase() === searchStr1)||(product.type.toLowerCase() === searchStr1)));
+      data = this.products.filter(product => ((product.slug === searchStr1)||(product.type === searchStr1)||(product.flashtype === searchStr1)||(product.newarrivals === searchStr1)||(product.topproducts === searchStr1)));
      //data =this.products.filter(product => (product.slug.toLowerCase() === searchStr || product.type.toLowerCase() === searchStr)).slice(0, 10);
     
       console.log('pricesearchstr', searchStr1)
